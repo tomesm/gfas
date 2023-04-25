@@ -1,0 +1,51 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: logstash
+  namespace: monitoring
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: logstash
+  template:
+    metadata:
+      labels:
+        app: logstash
+    spec:
+      containers:
+      - name: logstash
+        image: docker.elastic.co/logstash/logstash:7.17.1
+        ports:
+        - containerPort: 9600
+          name: monitor
+        - containerPort: 5044
+          name: beats
+        env:
+        - name: ELASTICSEARCH_HOST
+          value: "elasticsearch.monitoring.svc.cluster.local"
+        - name: ELASTICSEARCH_PORT
+          value: "9200"
+        resources:
+          requests:
+            cpu: 100m
+            memory: 2Gi
+          limits:
+            cpu: 1000m
+            memory: 2Gi
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: logstash
+  namespace: monitoring
+spec:
+  selector:
+    app: logstash
+  ports:
+    - protocol: TCP
+      port: 5044
+      targetPort: 5044
+      name: beats
+  type: ClusterIP

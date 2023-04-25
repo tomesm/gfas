@@ -1,0 +1,33 @@
+# Project specific
+gfas_key.json
+
+# Terraform specific
+*.tfstate
+*.tfstate.backup
+*.tfstate.lock.info
+*.terraform/
+.terraform.lock.hcl 
+
+*.tfvars
+
+# Log files
+*.log
+
+# Provider plugins
+.terraform/providers/
+
+# IDE and editor files
+.vscode/
+.idea/
+*.swp
+*.swo
+*.bak
+*.tmp
+*~
+
+# System files
+.DS_Store
+Thumbs.db
+
+# Other temporary files
+*.retry

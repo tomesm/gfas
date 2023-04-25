@@ -1,0 +1,35 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: tile38-server
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: tile38-server
+  template:
+    metadata:
+      labels:
+        app: tile38-server
+    spec:
+      containers:
+      - name: tile38-server
+        image: tile38/tile38
+        ports:
+        - containerPort: 9851
+
+---
+
+apiVersion: v1
+kind: Service
+metadata:
+  name: tile38-server
+spec:
+  selector:
+    app: tile38-server
+  ports:
+    - protocol: TCP
+      port: 9851
+      targetPort: 9851
+  type: LoadBalancer
+
